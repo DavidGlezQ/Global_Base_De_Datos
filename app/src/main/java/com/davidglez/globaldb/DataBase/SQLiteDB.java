@@ -1,5 +1,6 @@
 package com.davidglez.globaldb.DataBase;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,7 +15,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //Table products
         sqLiteDatabase.execSQL("create table IF NOT EXISTS products(id_product INTEGER PRIMARY KEY AUTOINCREMENT, name_product 'varchar', " +
-                "date_registration 'varchar', seller 'varchar', product_price 'varchar')");
+                "date_registration 'varchar', seller 'varchar', product_price 'int')");
 
         //Table seller
         sqLiteDatabase.execSQL("create TABLE IF NOT EXISTS seller(id_seller INTEGER PRIMARY KEY AUTOINCREMENT, name_seller 'varchar', " +
@@ -50,11 +51,26 @@ public class SQLiteDB extends SQLiteOpenHelper {
         //Table spices
         sqLiteDatabase.execSQL("create TABLE IF NOT EXISTS spices(id_spice INTEGER PRIMARY KEY AUTOINCREMENT,  " +
                 "name_spice 'varchar', product_brand 'varchar', id_price 'int', id_product 'int')");
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("drop table if exists products");
+    }
+
+    //Insert new product
+    public boolean insertNewProducts(String name_product, String date_registration, String seller, int product_price){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name_product", name_product);
+        values.put("date_registration", date_registration);
+        values.put("seller", seller);
+        values.put("product_price", product_price);
+        long result = sqLiteDatabase.insert("products", null, values);
+        if (result == -1){
+            return false;
+        } else {
+            return true;
+        }
     }
 }
