@@ -1,0 +1,2 @@
+rootProject.name = "GlobalDB"
+include ':app'
