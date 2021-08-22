@@ -1,5 +1,6 @@
 package com.davidglez.globaldb.Activities;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -86,7 +87,8 @@ public class PedidoActivity extends AppCompatActivity {
                     cursorProducto.close();
 
                     restauranteDB.insertarPedido(lastIdCuenta, lastIdMesero, lastIdCliente, lastIdProducto);
-
+                    setResult(Activity.RESULT_OK);
+                    finish();
                     Toast.makeText(PedidoActivity.this, "Pedido agregado con exito!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(PedidoActivity.this, "Debes de llenar todos los campos!", Toast.LENGTH_SHORT).show();

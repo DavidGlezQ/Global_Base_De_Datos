@@ -12,13 +12,16 @@ public class PedidoPojo {
     private String nombre_mesero;
     private String apellido_mesero;
     private String fecha;
+    private String mesa;
     private int comensales;
-    private int mesa;
     private float monto;
+
+
+    public PedidoPojo(){}
 
     public PedidoPojo(String nombre_cliente, String apellido_cliente, String plato_entrada, String plato_principal,
                       String postre, String bebida, String nota_extra, String nombre_mesero, String apellido_mesero,
-                      String fecha, int comensales, int mesa, float monto) {
+                      String fecha, int comensales, String mesa, float monto) {
         this.nombre_cliente = nombre_cliente;
         this.apellido_cliente = apellido_cliente;
         this.plato_entrada = plato_entrada;
@@ -122,11 +125,11 @@ public class PedidoPojo {
         this.comensales = comensales;
     }
 
-    public int getMesa() {
+    public String getMesa() {
         return mesa;
     }
 
-    public void setMesa(int mesa) {
+    public void setMesa(String mesa) {
         this.mesa = mesa;
     }
 
