@@ -1,10 +1,14 @@
 package com.davidglez.globaldb.Activities;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.davidglez.globaldb.DataBase.SQLiteRestauranteDB;
 import com.davidglez.globaldb.R;
 import com.davidglez.globaldb.databinding.ActivityPedidoBinding;
 import java.text.SimpleDateFormat;
@@ -13,8 +17,10 @@ import java.util.Date;
 public class PedidoActivity extends AppCompatActivity {
 
     private ActivityPedidoBinding binding;
+    private SQLiteRestauranteDB restauranteDB = new SQLiteRestauranteDB(this, "Restaurante.db", null, 1);
     private String nombre_cliente, apellido_cliente, plato_entrada, plato_principal,
             postres, bebida, nota_extra, nombre_mesero, apellido_mesero, fecha, comensales, mesa, monto;
+
     private final String[] sp_plato_entrada = {"Sopa de elote", "Pollo a la crema", "Lasaña mexicana", "Enchiladas mineras", "enchiladas de baile",
             "Tostadas de elote", "Burritos de chile con carne", "Nachos mexicanos", "Tostadas de camaron", "Calabazas con elote"};
     private final String[] sp_plato_principal = {"Enchiladas", "Pizza", "Hamburguesa", "Chilaquiles con chile", "Albondigas de pescado",
@@ -40,7 +46,38 @@ public class PedidoActivity extends AppCompatActivity {
                 tilValidate();
                 if (!nombre_cliente.isEmpty() && !apellido_cliente.isEmpty() && !comensales.isEmpty() && !mesa.isEmpty() && !nota_extra.isEmpty()
                 && !nombre_mesero.isEmpty() && !apellido_mesero.isEmpty() && !monto.isEmpty()){
-                    
+
+                    //Insert a la base de datos
+                    restauranteDB.insertarCuenta(monto, fecha);
+                    restauranteDB.insertarMesero(nombre_mesero, apellido_mesero);
+                    restauranteDB.insertarCliente(nombre_cliente, apellido_cliente, nota_extra, comensales, mesa);
+                    restauranteDB.insertarProducto();
+                    restauranteDB.insertarCategoriaProductos();
+
+
+                    //obtener ultimo id de cada tabla para insertar un pedido
+                    SQLiteDatabase db = restauranteDB.getReadableDatabase();
+                    final String myQueryCuenta = "SELECT MAX(id_cuenta) FROM cuenta";
+                    Cursor cursorCuenta = db.rawQuery(myQueryCuenta, null);
+                    cursorCuenta.moveToFirst();
+                    int lastIdCuenta = cursorCuenta.getInt(0);
+                    cursorCuenta.close();
+
+                    final String myQueryMesero = "SELECT MAX(id_mesero) FROM mesero";
+                    Cursor cursorMesero = db.rawQuery(myQueryMesero, null);
+                    cursorMesero.moveToFirst();
+                    int lastIdMesero = cursorMesero.getInt(0);
+                    cursorMesero.close();
+
+                    final String myQueryCliente = "SELECT MAX(id_cliente) FROM cliente";
+                    Cursor cursorCliente = db.rawQuery(myQueryCliente, null);
+                    cursorCliente.moveToFirst();
+                    int lastIdCliente = cursorCliente.getInt(0);
+                    cursorCliente.close();
+
+                    restauranteDB.insertarPedido(lastIdCuenta, lastIdMesero, lastIdCliente, 1);
+
+                    Toast.makeText(PedidoActivity.this, "Pedido agregado con exito!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(PedidoActivity.this, "Debes de llenar todos los campos!", Toast.LENGTH_SHORT).show();
                 }

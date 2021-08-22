@@ -125,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/tie_monto"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLength="10" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,7 +231,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_plato_bebida"
-            app:startIconDrawable="@drawable/ic_til_nota_extra"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText

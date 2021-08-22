@@ -23,10 +23,10 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
 
         //Tabla cliente
         sqLiteDatabase.execSQL("create table IF NOT EXISTS cliente(id_cliente INTEGER PRIMARY KEY AUTOINCREMENT, nombre_cliente 'varchar'," +
-                "apellido_cliente 'varchar', nota_extra 'varchar', comensales 'int', mesa 'int')");
+                "apellido_cliente 'varchar', nota_extra 'varchar', comensales 'varchar', mesa 'varchar')");
 
         //Tabla cuenta
-        sqLiteDatabase.execSQL("create table IF NOT EXISTS cuenta(id_cuenta INTEGER PRIMARY KEY AUTOINCREMENT, monto_cuenta 'float', " +
+        sqLiteDatabase.execSQL("create table IF NOT EXISTS cuenta(id_cuenta INTEGER PRIMARY KEY AUTOINCREMENT, monto_cuenta 'varchar', " +
                 "fecha_pedido 'varchar')");
 
         //Table categoria de productos
@@ -63,6 +63,8 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
     public boolean insertarMesero(String nombre_mesero, String apellido_mesero){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("nombre_mesero", nombre_mesero);
+        values.put("apellido_mesero", apellido_mesero);
         long result = sqLiteDatabase.insert("mesero", null, values);
         if (result == -1){
             return false;
@@ -72,7 +74,7 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
     }
 
     //Insertar nuevo cliente
-    public boolean insertarCliente(String nombre_cliente, String apellido_cliente, String nota_extra, int comensales, int mesa){
+    public boolean insertarCliente(String nombre_cliente, String apellido_cliente, String nota_extra, String comensales, String mesa){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre_cliente", nombre_cliente);
@@ -89,7 +91,7 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
     }
 
     //Insertar nuevo cuenta
-    public boolean insertarCuenta(float monto_cuenta, String fecha_pedido){
+    public boolean insertarCuenta(String monto_cuenta, String fecha_pedido){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("monto_cuenta", monto_cuenta);
