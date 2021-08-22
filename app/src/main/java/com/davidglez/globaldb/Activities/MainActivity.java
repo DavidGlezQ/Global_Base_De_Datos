@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursorCuenta = db.rawQuery("SELECT * FROM cuenta", null);
         while (cursorCliente.moveToNext() && cursorCuenta.moveToNext()){
             pedidoPojo = new PedidoPojo();
-            pedidoPojo.setNombre_cliente(cursorCliente.getString(1));
-            pedidoPojo.setMesa(cursorCliente.getString(5));
-            pedidoPojo.setFecha(cursorCuenta.getString(2));
+            pedidoPojo.setNombre_cliente("Comensal: " + cursorCliente.getString(1));
+            pedidoPojo.setMesa("Mesa: " + cursorCliente.getString(5));
+            pedidoPojo.setFecha("Fecha: " + cursorCuenta.getString(2));
             restaurantAdapter.addPedido(pedidoPojo);
         }
     }

@@ -2,6 +2,7 @@ package com.davidglez.globaldb.Pojos;
 
 public class PedidoPojo {
 
+    private int id;
     private String nombre_cliente;
     private String apellido_cliente;
     private String plato_entrada;
@@ -19,9 +20,8 @@ public class PedidoPojo {
 
     public PedidoPojo(){}
 
-    public PedidoPojo(String nombre_cliente, String apellido_cliente, String plato_entrada, String plato_principal,
-                      String postre, String bebida, String nota_extra, String nombre_mesero, String apellido_mesero,
-                      String fecha, int comensales, String mesa, float monto) {
+    public PedidoPojo(int id, String nombre_cliente, String apellido_cliente, String plato_entrada, String plato_principal, String postre, String bebida, String nota_extra, String nombre_mesero, String apellido_mesero, String fecha, String mesa, int comensales, float monto) {
+        this.id = id;
         this.nombre_cliente = nombre_cliente;
         this.apellido_cliente = apellido_cliente;
         this.plato_entrada = plato_entrada;
@@ -32,9 +32,17 @@ public class PedidoPojo {
         this.nombre_mesero = nombre_mesero;
         this.apellido_mesero = apellido_mesero;
         this.fecha = fecha;
-        this.comensales = comensales;
         this.mesa = mesa;
+        this.comensales = comensales;
         this.monto = monto;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre_cliente() {
