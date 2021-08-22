@@ -2,7 +2,7 @@
     <string name="app_name">GlobalDB</string>
     <string name="title_activity_menu">GlobalBD</string>
 
-    <string name="til_required_text">Dato requerido</string>
+    <string name="til_required_text">Dato requerido*</string>
     <string name="tie_name_client">Nombre del cliente</string>
     <string name="tie_lastname_client">Apellido del cliente</string>
     <string name="tie_name_mesero">Nombre del mesero</string>

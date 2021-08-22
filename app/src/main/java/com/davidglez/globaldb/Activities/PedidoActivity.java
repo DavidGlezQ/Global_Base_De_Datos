@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.davidglez.globaldb.R;
 import com.davidglez.globaldb.databinding.ActivityMainBinding;
@@ -12,7 +14,12 @@ import com.davidglez.globaldb.databinding.ActivityPedidoBinding;
 public class PedidoActivity extends AppCompatActivity {
 
     private ActivityPedidoBinding binding;
-    private String n;
+    private String nombre_cliente, apellido_cliente, plato_entrada, plato_principal,
+            postres, bebida, nota_extra, nombre_mesero, apellido_mesero, fecha, comensales, mesa, monto;
+    private final String[] sp_plato_entrada = {"Sopa de elote", "Pollo a la crema"};
+    private final String[] sp_plato_principal = {"Enchiladas", "Pizza", "Hamburguesa"};
+    private final String[] sp_plato_postre = {"Tarta de Calabaza", "Pay de Queso"};
+    private final String[] sp_bebiba = {"Cola-Cola", "Fanta", "Agua", "Cerveza", "Vino"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +28,50 @@ public class PedidoActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        setSpinners();
+
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tilValidate();
+                if (!nombre_cliente.isEmpty() && !apellido_cliente.isEmpty() && !comensales.isEmpty() && !mesa.isEmpty() && !nota_extra.isEmpty()
+                && !nombre_mesero.isEmpty() && !apellido_mesero.isEmpty() && !monto.isEmpty()){
 
+                } else {
+                    Toast.makeText(PedidoActivity.this, "Debes de llenar todos los campos!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    //Validacion de campos
+    public void tilValidate(){
+        nombre_cliente = binding.tieNameClient.getText().toString();
+        apellido_cliente = binding.tieLastnameClient.getText().toString();
+        comensales = binding.tieNumComensales.getText().toString();
+        mesa = binding.tieMesa.getText().toString();
+        nota_extra = binding.tieNotaExtra.getText().toString();
+        nombre_mesero = binding.tieNameMesero.getText().toString();
+        apellido_mesero = binding.tieLastnameMesero.getText().toString();
+        monto = binding.tieMonto.getText().toString();
+    }
+
+    //set spinners
+    public void setSpinners(){
+        ArrayAdapter adapterEntrada = new ArrayAdapter(this, R.layout.option_item, sp_plato_entrada);
+        binding.actPlatoEntrada.setText(adapterEntrada.getItem(0).toString(), false);
+        binding.actPlatoEntrada.setAdapter(adapterEntrada);
+
+        ArrayAdapter adapterPrincipal = new ArrayAdapter(this, R.layout.option_item, sp_plato_principal);
+        binding.actPlatoPrincipal.setText(adapterPrincipal.getItem(0).toString(), false);
+        binding.actPlatoPrincipal.setAdapter(adapterPrincipal);
+
+        ArrayAdapter adapterPostre = new ArrayAdapter(this, R.layout.option_item, sp_plato_postre);
+        binding.actPlatoPostre.setText(adapterPostre.getItem(0).toString(), false);
+        binding.actPlatoPostre.setAdapter(adapterPostre);
+
+        ArrayAdapter adapterBebida = new ArrayAdapter(this, R.layout.option_item, sp_bebiba);
+        binding.actBebida.setText(adapterBebida.getItem(0).toString(), false);
+        binding.actBebida.setAdapter(adapterBebida);
     }
 }
