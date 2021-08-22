@@ -107,8 +107,6 @@ public class PedidoActivity extends AppCompatActivity {
         nombre_mesero = binding.tieNameMesero.getText().toString();
         apellido_mesero = binding.tieLastnameMesero.getText().toString();
         monto = binding.tieMonto.getText().toString();
-
-
     }
 
     //set spinners

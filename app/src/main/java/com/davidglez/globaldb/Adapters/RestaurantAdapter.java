@@ -46,6 +46,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.txtNombreComensal.setText(pedidoPojo.getNombre_cliente());
         holder.txtFecha.setText(pedidoPojo.getFecha());
         holder.txtMesa.setText(pedidoPojo.getMesa());
+        holder.txtId.setText("" + pedidoPojo.getId());
 
         holder.ivMenuOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +81,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView txtFecha, txtNombreComensal, txtMesa;
+        private TextView txtFecha, txtNombreComensal, txtMesa, txtId;
         private ImageView ivMenuOption;
 
         public ViewHolder(View itemView) {
@@ -89,7 +90,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             txtFecha = itemView.findViewById(R.id.txtFechaReg);
             txtNombreComensal = itemView.findViewById(R.id.txtNombreComensal);
             txtMesa = itemView.findViewById(R.id.txtNumMesa);
-
+            txtId = itemView.findViewById(R.id.txtId);
             ivMenuOption = itemView.findViewById(R.id.ivOptions);
 
         }
@@ -108,7 +109,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         SQLiteRestauranteDB restauranteDB = new SQLiteRestauranteDB(context, "Restaurante.db", null, 1);
-                        SQLiteDatabase sqLiteDatabase = restauranteDB.getReadableDatabase();
+                        SQLiteDatabase sqLiteDatabase = restauranteDB.getWritableDatabase();
                         String id = String.valueOf(pedidoPojo.getId());
                         if (!id.isEmpty()){
                             sqLiteDatabase.delete("mesero", "id_mesero=" + id, null);
@@ -118,6 +119,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                             sqLiteDatabase.delete("pedido", "id_pedido=" + id, null);
                             deleteItem(pedidoPojo);
                             sqLiteDatabase.close();
+                            Toast.makeText(context, "Pedido eliminado", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, "No se pudo eliminar el pedido", Toast.LENGTH_SHORT).show();
                         }

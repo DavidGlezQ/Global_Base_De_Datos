@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         pedidoPojoArrayList = new ArrayList<>();
         restauranteDB = new SQLiteRestauranteDB(this, "cliente", null, 1);
         restauranteDB = new SQLiteRestauranteDB(this, "cuenta", null, 1);
+        restauranteDB = new SQLiteRestauranteDB(this, "pedido", null, 1);
         restaurantAdapter = new RestaurantAdapter(pedidoPojoArrayList, pedidoPojoArrayList, this);
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         binding.recyclerView.setAdapter(restaurantAdapter);
@@ -67,11 +68,13 @@ public class MainActivity extends AppCompatActivity {
         PedidoPojo pedidoPojo = null;
         Cursor cursorCliente = db.rawQuery("SELECT * FROM cliente", null);
         Cursor cursorCuenta = db.rawQuery("SELECT * FROM cuenta", null);
-        while (cursorCliente.moveToNext() && cursorCuenta.moveToNext()){
+        Cursor cursorPedido = db.rawQuery("SELECT * FROM pedido", null);
+        while (cursorCliente.moveToNext() && cursorCuenta.moveToNext() && cursorPedido.moveToNext()){
             pedidoPojo = new PedidoPojo();
-            pedidoPojo.setNombre_cliente("Comensal: " + cursorCliente.getString(1));
+            pedidoPojo.setNombre_cliente("Comensal: " + cursorCliente.getString(1) + " " + cursorCliente.getString(2));
             pedidoPojo.setMesa("Mesa: " + cursorCliente.getString(5));
-            pedidoPojo.setFecha("Fecha: " + cursorCuenta.getString(2));
+            pedidoPojo.setFecha(cursorCuenta.getString(2));
+            pedidoPojo.setId(cursorPedido.getInt(0));
             restaurantAdapter.addPedido(pedidoPojo);
         }
     }
