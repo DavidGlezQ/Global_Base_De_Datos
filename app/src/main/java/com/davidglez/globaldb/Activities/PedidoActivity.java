@@ -19,9 +19,9 @@ public class PedidoActivity extends AppCompatActivity {
     private ActivityPedidoBinding binding;
     private SQLiteRestauranteDB restauranteDB = new SQLiteRestauranteDB(this, "Restaurante.db", null, 1);
     private String nombre_cliente, apellido_cliente, plato_entrada, plato_principal,
-            postres, bebida, nota_extra, nombre_mesero, apellido_mesero, fecha, comensales, mesa, monto;
+            plato_postre, bebida, nota_extra, nombre_mesero, apellido_mesero, fecha, comensales, mesa, monto;
 
-    private final String[] sp_plato_entrada = {"Sopa de elote", "Pollo a la crema", "Lasaña mexicana", "Enchiladas mineras", "enchiladas de baile",
+    private final String[] sp_plato_entrada = {"Sopa de elote", "Pollo a la crema", "Lasaña mexicana", "Enchiladas mineras", "Enchiladas de baile",
             "Tostadas de elote", "Burritos de chile con carne", "Nachos mexicanos", "Tostadas de camaron", "Calabazas con elote"};
     private final String[] sp_plato_principal = {"Enchiladas", "Pizza", "Hamburguesa", "Chilaquiles con chile", "Albondigas de pescado",
             "Quesadilla de pollo", "Tamales", "Chiles en nogada", "Ceviche de pescado", "Tacos de pescado"};
@@ -47,12 +47,16 @@ public class PedidoActivity extends AppCompatActivity {
                 if (!nombre_cliente.isEmpty() && !apellido_cliente.isEmpty() && !comensales.isEmpty() && !mesa.isEmpty() && !nota_extra.isEmpty()
                 && !nombre_mesero.isEmpty() && !apellido_mesero.isEmpty() && !monto.isEmpty()){
 
+                    plato_entrada = binding.actPlatoEntrada.getText().toString();
+                    plato_principal = binding.actPlatoPrincipal.getText().toString();
+                    plato_postre = binding.actPlatoPostre.getText().toString();
+                    bebida = binding.actBebida.getText().toString();
+
                     //Insert a la base de datos
                     restauranteDB.insertarCuenta(monto, fecha);
                     restauranteDB.insertarMesero(nombre_mesero, apellido_mesero);
                     restauranteDB.insertarCliente(nombre_cliente, apellido_cliente, nota_extra, comensales, mesa);
-                    restauranteDB.insertarProducto();
-                    restauranteDB.insertarCategoriaProductos();
+                    restauranteDB.insertarProductos(plato_entrada, plato_principal, plato_postre, bebida);
 
 
                     //obtener ultimo id de cada tabla para insertar un pedido
@@ -75,7 +79,13 @@ public class PedidoActivity extends AppCompatActivity {
                     int lastIdCliente = cursorCliente.getInt(0);
                     cursorCliente.close();
 
-                    restauranteDB.insertarPedido(lastIdCuenta, lastIdMesero, lastIdCliente, 1);
+                    final String myQueryProducto = "SELECT MAX(id_producto) FROM productos";
+                    Cursor cursorProducto = db.rawQuery(myQueryProducto, null);
+                    cursorProducto.moveToFirst();
+                    int lastIdProducto = cursorProducto.getInt(0);
+                    cursorProducto.close();
+
+                    restauranteDB.insertarPedido(lastIdCuenta, lastIdMesero, lastIdCliente, lastIdProducto);
 
                     Toast.makeText(PedidoActivity.this, "Pedido agregado con exito!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -95,6 +105,8 @@ public class PedidoActivity extends AppCompatActivity {
         nombre_mesero = binding.tieNameMesero.getText().toString();
         apellido_mesero = binding.tieLastnameMesero.getText().toString();
         monto = binding.tieMonto.getText().toString();
+
+
     }
 
     //set spinners

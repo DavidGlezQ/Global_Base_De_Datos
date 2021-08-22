@@ -30,11 +30,8 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
                 "fecha_pedido 'varchar')");
 
         //Table categoria de productos
-        sqLiteDatabase.execSQL("create table IF NOT EXISTS categoria_productos(id_categoria_producto INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "nombre_categoria 'varchar', id_producto 'int')");
-
-        //Table productos
-        sqLiteDatabase.execSQL("create table IF NOT EXISTS productos(id_producto INTEGER PRIMARY KEY AUTOINCREMENT, nombre_producto 'varchar')");
+        sqLiteDatabase.execSQL("create table IF NOT EXISTS productos(id_producto INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "plato_entrada 'varchar', plato_principal 'varchar', plato_postre, bebida 'varchar')");
 
     }
 
@@ -104,25 +101,14 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
         }
     }
 
-    //Insertar nuevo
-    public boolean insertarCategoriaProductos(String nombre_categoria, int id_producto){
+    //Insertar nueva categoria de productos
+    public boolean insertarProductos(String plato_entrada, String plato_principal, String plato_postre, String bebida){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("nombre_categoria", nombre_categoria);
-        values.put("id_producto", id_producto);
-        long result = sqLiteDatabase.insert("categoria_productos", null, values);
-        if (result == -1){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    //Insertar nuevo
-    public boolean insertarProducto(String nombre_producto){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("nombre_producto", nombre_producto);
+        values.put("plato_entrada", plato_entrada);
+        values.put("plato_principal", plato_principal);
+        values.put("plato_postre", plato_postre);
+        values.put("bebida", bebida);
         long result = sqLiteDatabase.insert("productos", null, values);
         if (result == -1){
             return false;
@@ -130,4 +116,6 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
             return true;
         }
     }
+
+
 }
