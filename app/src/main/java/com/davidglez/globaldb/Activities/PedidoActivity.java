@@ -1,25 +1,28 @@
 package com.davidglez.globaldb.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.davidglez.globaldb.R;
-import com.davidglez.globaldb.databinding.ActivityMainBinding;
 import com.davidglez.globaldb.databinding.ActivityPedidoBinding;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PedidoActivity extends AppCompatActivity {
 
     private ActivityPedidoBinding binding;
     private String nombre_cliente, apellido_cliente, plato_entrada, plato_principal,
             postres, bebida, nota_extra, nombre_mesero, apellido_mesero, fecha, comensales, mesa, monto;
-    private final String[] sp_plato_entrada = {"Sopa de elote", "Pollo a la crema"};
-    private final String[] sp_plato_principal = {"Enchiladas", "Pizza", "Hamburguesa"};
-    private final String[] sp_plato_postre = {"Tarta de Calabaza", "Pay de Queso"};
-    private final String[] sp_bebiba = {"Cola-Cola", "Fanta", "Agua", "Cerveza", "Vino"};
+    private final String[] sp_plato_entrada = {"Sopa de elote", "Pollo a la crema", "Lasaña mexicana", "Enchiladas mineras", "enchiladas de baile",
+            "Tostadas de elote", "Burritos de chile con carne", "Nachos mexicanos", "Tostadas de camaron", "Calabazas con elote"};
+    private final String[] sp_plato_principal = {"Enchiladas", "Pizza", "Hamburguesa", "Chilaquiles con chile", "Albondigas de pescado",
+            "Quesadilla de pollo", "Tamales", "Chiles en nogada", "Ceviche de pescado", "Tacos de pescado"};
+    private final String[] sp_plato_postre = {"Tarta de Calabaza", "Pay de Queso", "Pastel de elote", "Helado", "Cocada", "Mousse", "Jericalla",
+            "Picarones", "Ate", "Crepe"};
+    private final String[] sp_bebiba = {"Cola-Cola", "Fanta", "Agua", "Cerveza", "Vino", "Limonada", "Agua de jamaica", "Te verde", "Jugo de naranja",
+            "Sidral"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class PedidoActivity extends AppCompatActivity {
         setContentView(view);
 
         setSpinners();
+        getDate();
 
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +40,7 @@ public class PedidoActivity extends AppCompatActivity {
                 tilValidate();
                 if (!nombre_cliente.isEmpty() && !apellido_cliente.isEmpty() && !comensales.isEmpty() && !mesa.isEmpty() && !nota_extra.isEmpty()
                 && !nombre_mesero.isEmpty() && !apellido_mesero.isEmpty() && !monto.isEmpty()){
-
+                    
                 } else {
                     Toast.makeText(PedidoActivity.this, "Debes de llenar todos los campos!", Toast.LENGTH_SHORT).show();
                 }
@@ -73,5 +77,12 @@ public class PedidoActivity extends AppCompatActivity {
         ArrayAdapter adapterBebida = new ArrayAdapter(this, R.layout.option_item, sp_bebiba);
         binding.actBebida.setText(adapterBebida.getItem(0).toString(), false);
         binding.actBebida.setAdapter(adapterBebida);
+    }
+
+    public void getDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        fecha = simpleDateFormat.format(date);
+        binding.txtFecha.setText("Fecha del registro: " + fecha);
     }
 }
