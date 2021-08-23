@@ -40,6 +40,75 @@ public class SQLiteRestauranteDB extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("drop table if exists pedido");
     }
 
+    //Update
+    public boolean updatePedido(int id_pedido){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id_pedido", id_pedido);
+        long result = sqLiteDatabase.update("pedido", values, "id_pedido='" + id_pedido + "'", null);
+        if (result == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean updateMesero(int id_pedido, String nombre_mesero, String apellido_mesero){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nombre_mesero", nombre_mesero);
+        values.put("apellido_mesero", apellido_mesero);
+        long result = sqLiteDatabase.update("mesero", values, "id_mesero='" + id_pedido + "'", null);
+        if (result == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean updateCliente(int id_pedido, String nombre_cliente, String apellido_cliente, String nota_extra, String comensales, String mesa){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nombre_cliente", nombre_cliente);
+        values.put("apellido_cliente", apellido_cliente);
+        values.put("nota_extra", nota_extra);
+        values.put("comensales", comensales);
+        values.put("mesa", mesa);
+        long result = sqLiteDatabase.update("cliente", values, "id_cliente='" + id_pedido + "'", null);
+        if (result == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean updateCuenta(int id_pedido, String monto_cuenta){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("monto_cuenta", monto_cuenta);
+        long result = sqLiteDatabase.update("cuenta", values, "id_cuenta='" + id_pedido + "'", null);
+        if (result == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean updateProductos(int id_pedido, String plato_entrada, String plato_principal, String plato_postre, String bebida){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("plato_entrada", plato_entrada);
+        values.put("plato_principal", plato_principal);
+        values.put("plato_postre", plato_postre);
+        values.put("bebida", bebida);
+        long result = sqLiteDatabase.update("productos", values, "id_producto='" + id_pedido + "'", null);
+        if (result == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     //Insertar nuevo pedido
     public boolean insertarPedido(int id_cuenta, int id_mesero, int id_cliente, int id_categoria_producto){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

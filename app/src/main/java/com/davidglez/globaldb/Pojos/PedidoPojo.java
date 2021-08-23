@@ -1,6 +1,8 @@
 package com.davidglez.globaldb.Pojos;
 
-public class PedidoPojo {
+import java.io.Serializable;
+
+public class PedidoPojo implements Serializable {
 
     private int id;
     private String nombre_cliente;

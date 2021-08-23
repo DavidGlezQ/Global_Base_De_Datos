@@ -1,8 +1,11 @@
 package com.davidglez.globaldb.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.davidglez.globaldb.Activities.PedidoActivity;
 import com.davidglez.globaldb.DataBase.SQLiteRestauranteDB;
 import com.davidglez.globaldb.Pojos.PedidoPojo;
 import com.davidglez.globaldb.R;
@@ -27,8 +31,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     private List<PedidoPojo> mData = new ArrayList<>();
     private ArrayList<PedidoPojo> pedidoPojos;
     private Context context;
+    private Activity activity;
 
-    public RestaurantAdapter(List<PedidoPojo> mData, ArrayList<PedidoPojo> pedidoPojos, Context context) {
+    public RestaurantAdapter(List<PedidoPojo> mData, ArrayList<PedidoPojo> pedidoPojos, Context context, Activity activity) {
+        this.activity = activity;
         this.mData = mData;
         this.pedidoPojos = pedidoPojos;
         this.context = context;
@@ -47,6 +53,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.txtFecha.setText(pedidoPojo.getFecha());
         holder.txtMesa.setText(pedidoPojo.getMesa());
         holder.txtId.setText("" + pedidoPojo.getId());
+        holder.txtApellidoComensal.setText(pedidoPojo.getApellido_cliente());
 
         holder.ivMenuOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +66,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.menu_item_edit:
-
+                                Intent intent = new Intent(context, PedidoActivity.class);
+                                intent.putExtra("pedido", pedidoPojo);
+                                activity.startActivityForResult(intent, 23);
                                 return true;
                             case R.id.menu_item_delete:
                                 deletePedido(pedidoPojo);
@@ -81,7 +90,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView txtFecha, txtNombreComensal, txtMesa, txtId;
+        private TextView txtFecha, txtNombreComensal, txtMesa, txtId, txtApellidoComensal;
         private ImageView ivMenuOption;
 
         public ViewHolder(View itemView) {
@@ -91,6 +100,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             txtNombreComensal = itemView.findViewById(R.id.txtNombreComensal);
             txtMesa = itemView.findViewById(R.id.txtNumMesa);
             txtId = itemView.findViewById(R.id.txtId);
+            txtApellidoComensal = itemView.findViewById(R.id.txtApellidoComensal);
             ivMenuOption = itemView.findViewById(R.id.ivOptions);
 
         }
